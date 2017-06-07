@@ -32,16 +32,25 @@ class MainHandler(webapp2.RequestHandler):
 
 class CountHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('I am the count handler')
+
+        favorite_number = 27
+
+        count_template = JINJA_ENVIRONMENT.get_template("templates/number.html")
+        # self.response.write('I am the count handler')
+        self.response.write(count_template.render({'user_number': favorite_number}))
 
 class FortuneHandler(webapp2.RequestHandler):
     def get(self):
+
+        user_name = "Joe"
+        user_location = "Berlin"
+
         fortune_page = JINJA_ENVIRONMENT.get_template("templates/fortune.html")
         myArray = ["blah", "more blah", "You will draw the moon today", "nothing", "everything", "something"]
         my_len = len(myArray)
 
         # self.response.write(myArray[randint(0,my_len - 1)])
-        self.response.write(fortune_page.render())
+        self.response.write(fortune_page.render({'user_name': user_name, 'user_location': user_location, 'user_fortune': myArray[randint(0,my_len - 1)]}))
 
 # root route
 app = webapp2.WSGIApplication([
