@@ -16,8 +16,14 @@
 #
 import webapp2
 from random import randint
+import jinja2
+import os
 
-myArray = ["blah", "more blah", "You will draw the moon today"]
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -30,11 +36,12 @@ class CountHandler(webapp2.RequestHandler):
 
 class FortuneHandler(webapp2.RequestHandler):
     def get(self):
-        # myArray = ["blah", "more blah", "You will draw the moon today"]
+        fortune_page = JINJA_ENVIRONMENT.get_template("templates/fortune.html")
+        myArray = ["blah", "more blah", "You will draw the moon today", "nothing", "everything", "something"]
         my_len = len(myArray)
 
-        self.response.write(myArray[randint(0,my_len - 1)])
-
+        # self.response.write(myArray[randint(0,my_len - 1)])
+        self.response.write(fortune_page.render())
 
 # root route
 app = webapp2.WSGIApplication([
